@@ -88,7 +88,7 @@ for uid in uids:
 
 
 
-    if aids[0]:
+    if aids and aids[0]:
         headers = {'cookie': COOKIE, 'user-agent': UA}
         data = {
             'rid': aids[0],
