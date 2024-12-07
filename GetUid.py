@@ -174,12 +174,6 @@ print(response.text)
 
 
 
-with open(black_file, 'r', encoding='utf-8') as file:
-    lines = file.readlines()
-    for line in lines:
-        uid = line.strip()
-        if uid.isdigit():
-            uids.discard(int(uid))
 
 with open(white_file, 'r', encoding='utf-8') as file:
     lines = file.readlines()
@@ -188,6 +182,13 @@ with open(white_file, 'r', encoding='utf-8') as file:
         if uid.isdigit():
             uids.add(int(uid))
             lists.add(int(uid))
+with open(black_file, 'r', encoding='utf-8') as file:
+    lines = file.readlines()
+    for line in lines:
+        uid = line.strip()
+        if uid.isdigit():
+            uids.discard(int(uid))
+            lists.discard(int(uid))
 
 
 
@@ -202,3 +203,4 @@ lists = sorted(lists)
 with open(list_file, 'w', encoding='utf-8') as file:
     for list in lists:
         file.write(f'{list}\n')
+
