@@ -103,6 +103,7 @@ for uid in uids:
             'csrf': CSRF,}
         response = requests.post('https://api.bilibili.com/x/v3/fav/resource/deal',  headers=headers, data=data,proxies=proxies)
         print(f'收藏{aids[0]}:{response.text}')
+        print(f'\nhttps://space.bilibili.com/{uid}\n')
 
 
 
