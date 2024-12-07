@@ -36,17 +36,20 @@ service = Service(executable_path=chrome_driver_path)
 driver = webdriver.Chrome(service=service, options=options)  # 启动 Chrome 浏览器
 driver.set_window_size(1000, 700)  # 设置浏览器窗口大小（宽度, 高度）
 driver.get("https://space.bilibili.com")
+try:
 
-element = WebDriverWait(driver, 5).until(
-    EC.presence_of_element_located(
-        (By.XPATH, '//*[@id="app-main"]/div/div[2]/div[1]/div[2]/div[1]/div'))
-)
-title = element.get_attribute('title')
-qr = qrcode.QRCode()
-qr.border = 1
-qr.add_data(title)
-qr.make()
-qr.print_ascii(out=None, tty=False, invert=False)
+    element = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located(
+            (By.XPATH, '//*[@id="app-main"]/div/div[2]/div[1]/div[2]/div[1]/div'))
+    )
+    title = element.get_attribute('title')
+    qr = qrcode.QRCode()
+    qr.border = 1
+    qr.add_data(title)
+    qr.make()
+    qr.print_ascii(out=None, tty=False, invert=False)
+except Exception as e:
+    print('无法获取验证码元素')
 
 print('\n等待登陆中\n')
 while True:
