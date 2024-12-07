@@ -45,8 +45,10 @@
 ## Linux系统使用方法（未尝试）❗
 本项目理论上支持Linux系统，仅需要修改浏览器和驱动可执行文件名称即可。  
 值得注意的是，Chrome和Chromium浏览器官方不支持某些架构。如：ARM32Linux的玩客云盒子，此类设备只能运行针对动态和主页的举报，无法完成视频的举报。  
-另外B站无法通过导入浏览器cookie登录，Linux设备大多不提供图形界面。  
-所以需要编写自动登录脚本或采用其他方式登录，例如：在控制台用字符展示登陆二维码、远程显示图形界面或在本地登陆后上传浏览器数据。  
+另外B站无法通过导入浏览器cookie登录，Linux设备大多不提供图形界面。程序会尝试在终端用字符显示登陆二维码，如图所示：  
+<img src="https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/heads/main/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/%E5%9B%BE%E7%89%87/1.png" alt="如图所示" width="600" />  
+
+    
 
 ## 程序逻辑🧠   
 1，Start.是守护进程，负责启动其他三个程序，运行后会启动Getuid  
