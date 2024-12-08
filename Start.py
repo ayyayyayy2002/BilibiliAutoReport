@@ -1,4 +1,3 @@
-from datetime import datetime
 import subprocess
 import sys
 import os
@@ -11,12 +10,6 @@ log_directory = os.path.join(base_dir, '运行记录')
 os.makedirs(log_directory, exist_ok=True)
 skip = True
 
-
-def log_error(message):
-    with open(log_file, 'a', encoding='utf-8') as log:
-        timestamp = datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
-        print(f"\n{timestamp} {message}")
-        log.write(f"\n\n{timestamp} {message}")
 
 
 
@@ -56,4 +49,3 @@ while True:
         else:
             error_message = f"Report.py 出现错误，返回码: {report_process.returncode}，正在重新运行 Report.py..."
             print(error_message)
-            log_error(error_message)  # 记录错误信息
