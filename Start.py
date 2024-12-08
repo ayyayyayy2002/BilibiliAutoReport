@@ -34,7 +34,7 @@ while True:
         else:
             error_message = f"Getuid.py 出现错误，返回码: {getuid_process.returncode}，正在重新运行 Getuid.py..."
             print(error_message)
-            log_error(error_message)  # 记录错误信息
+
 
     while True:
         #report_process.wait()  # 不等待 SpaceAndDynamic.py 结束
