@@ -15,7 +15,6 @@ log_file = os.path.join(base_dir, '运行记录', '循环记录.txt')
 env_file = os.path.join(base_dir, '附加文件', '.env')
 proxies = {'http': None, 'https': None}
 uids = set()
-
 load_dotenv(dotenv_path=env_file)
 COOKIE = os.getenv('COOKIE')
 MEDIAID = os.getenv('MEDIAID')
@@ -106,11 +105,17 @@ for uid in uids:
         print(f'\nhttps://space.bilibili.com/{uid}\n')
 
 
+        aid_log_file = os.path.join(base_dir, '运行记录','UID记录', f'{uid}.txt')
+        with open(aid_log_file, 'w', encoding='utf-8') as file:
+            for aid in aids:
+                file.write(f'{aid}\n')
+
+
 
 
     for aid, title, pic in zip(aids, titles, pics):
         reportcount += 1
-        time.sleep(2.5)
+        time.sleep(2.3)
         headers = {'cookie': COOKIE, 'user-agent': UA}
         data = {
             'aid': aid,
@@ -118,7 +123,7 @@ for uid in uids:
             'block_author': 'false',
             'csrf': CSRF,
             'desc': f'视频标题{title}、视频封面以及视频内容违规，推广以原神、碧蓝档案等二次元游戏人物为主角的色情视频，侮辱国家领导人，宣扬台独反华内容。审核结果：下架此视频并永久封禁该账号',
-            'tid': '10019',
+            'tid': '10014'
         }
         response = requests.post('https://api.bilibili.com/x/web-interface/appeal/v2/submit', headers=headers,data=data, proxies=proxies)
         print(f'视频{reportcount:03}:{response.text}')
