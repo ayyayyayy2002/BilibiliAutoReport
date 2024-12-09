@@ -13,11 +13,11 @@ from selenium.webdriver.common.by import By
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 ########################################################################################################################
-list_file = os.path.join(base_dir, '附加文件', 'list.txt')
-white_file = os.path.join(base_dir, '附加文件', 'white.txt')
-black_file = os.path.join(base_dir, '附加文件', 'black.txt')
-keywords_file = os.path.join(base_dir, '附加文件', 'keywords.txt')
-log_path = os.path.join(base_dir, '运行记录')
+list_file = os.path.join(base_dir, '附加文件', 'list')
+white_file = os.path.join(base_dir, '附加文件', 'white')
+black_file = os.path.join(base_dir, '附加文件', 'black')
+keywords_file = os.path.join(base_dir, '附加文件', 'keywords')
+search_log_path = os.path.join(base_dir, '运行记录','搜索记录')
 ########################################################################################################################
 uid_file = os.path.join(base_dir, '附加文件', 'uid.txt')
 env_file = os.path.join(base_dir, '附加文件', '.env')
@@ -124,14 +124,14 @@ for keyword in keywords:  # 遍历关键词列表，进行搜索和处理
 try:
     # 获取当前时间并格式化
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    backup_filename = os.path.join(log_path, f'{timestamp}.txt')
+    backup_filename = os.path.join(search_log_path, f'{timestamp}.txt')
     shutil.copy(uid_file, backup_filename)
     print(f"成功保存备份：{backup_filename}")
 except IOError as e:
     print(f"保存备份时发生错误：{e}")
 
 
-
+driver.get("https://space.bilibili.com")
 cookies = driver.get_cookies()
 COOKIE = '; '.join([f"{cookie['name']}={cookie['value']}" for cookie in cookies])
 UA = driver.execute_script("return navigator.userAgent;")
@@ -164,6 +164,7 @@ if COOKIE2:
 headers = {'cookie': COOKIE, 'user-agent': UA}
 response = requests.get('https://api.bilibili.com/x/v2/history/toview',  headers=headers,proxies= proxies)
 data = response.json()
+print(response.text)
 for item in data['data']['list']:
     mid = item['owner']['mid']
     uids.add(mid)
@@ -171,7 +172,6 @@ for item in data['data']['list']:
 data = {'csrf': CSRF}
 response = requests.post('https://api.bilibili.com/x/v2/history/toview/clear', headers=headers, data=data,proxies=proxies)
 print(response.text)
-
 
 
 
@@ -203,4 +203,3 @@ lists = sorted(lists)
 with open(list_file, 'w', encoding='utf-8') as file:
     for list in lists:
         file.write(f'{list}\n')
-
