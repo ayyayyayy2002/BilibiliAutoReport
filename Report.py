@@ -105,12 +105,15 @@ for uid in uids:
         print(f'\nhttps://space.bilibili.com/{uid}\n')
 
 
-        aid_log_file = os.path.join(base_dir, '运行记录','UID记录', f'{uid}.txt')
-        with open(aid_log_file, 'w', encoding='utf-8') as file:
-            for aid in aids:
-                file.write(f'{aid}\n')
 
 
+        try:
+            aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
+            with open(aid_log_file, 'w', encoding='utf-8') as file:
+                for aid in aids:
+                    file.write(f'{aid}\n')
+        except IOError as e:
+            print(f"保存备份时发生错误：{e}")
 
 
     for aid, title, pic in zip(aids, titles, pics):
