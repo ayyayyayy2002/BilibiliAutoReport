@@ -14,7 +14,9 @@
 5，此项目的全部代码由[ChatGPT3.5Turbo](https://platform.openai.com/docs/models/gpt-3-5#gpt-3-5-turbo)完成  
 
 ## 此仓库可能包含多个分支，请注意识别🛑
-1，main分支：纯Python，浏览器过人机验证，关键词搜索+稍后再看+自定义列表  
+1，Python+Selenium分支：默认分支，纯Python，浏览器过人机验证，关键词搜索+稍后再看+黑白名单  
+2，Python+Selenium+JavaScript分支：Python结构，JavaScript举报，浏览器过人机验证，关键词搜索+稍后再看+黑白名单  
+3，Python分支：纯Python实现，破解人机验证，不需要浏览器，但是运行一段时间后会被风控  
 
 
 ## 使用方法（仅限Windows，可能需要下载PyCharm）🐍 
