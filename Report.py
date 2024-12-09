@@ -126,7 +126,7 @@ for uid in uids:
             'block_author': 'false',
             'csrf': CSRF,
             'desc': f'视频标题{title}、视频封面以及视频内容违规，推广以原神、碧蓝档案等二次元游戏人物为主角的色情视频，侮辱国家领导人，宣扬台独反华内容。审核结果：下架此视频并永久封禁该账号',
-            'tid': '10019'
+            'tid': '10014'
         }
         response = requests.post('https://api.bilibili.com/x/web-interface/appeal/v2/submit', headers=headers,data=data, proxies=proxies)
         print(f'视频{reportcount:03}:{response.text}')
