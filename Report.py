@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from datetime import datetime
-from Capcha import capcha
+from CapchaTest import capcha
 import requests
 import time
 import re
@@ -135,6 +135,7 @@ for uid in uids:
         elif "-352" in response.text:
             COOKIE = capcha(aid)
             os.environ['COOKIE'] = COOKIE
+            continue
 
 
 
