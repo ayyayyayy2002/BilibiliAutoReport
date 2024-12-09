@@ -27,9 +27,6 @@ while True:
             else:
                 error_message = f"Getuid.py 出现错误，返回码: {getuid_process.returncode}，正在重新运行 Getuid.py..."
                 print(error_message)
-        print('启动SpaceAndDynamic.py')
-        SpaceAndDynamic_process = subprocess.Popen([sys.executable, 'SpaceAndDynamic.py'], shell=True)
-
 
     else:
         print('首次运行跳过')
