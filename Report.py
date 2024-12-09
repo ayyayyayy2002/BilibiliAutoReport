@@ -135,7 +135,6 @@ for uid in uids:
         elif "-352" in response.text:
             COOKIE = capcha(aid)
             os.environ['COOKIE'] = COOKIE
-            continue
 
 
 
