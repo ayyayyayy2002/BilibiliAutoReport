@@ -1,20 +1,24 @@
-import base64
-import re
-import time
-from io import BytesIO
-import qrcode
-
-import requests
-import zxing
-from PIL import Image
-from dotenv import load_dotenv, set_key
-from selenium.webdriver.chrome.service import Service
-from selenium import webdriver
-import sys
-import os
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from dotenv import load_dotenv, set_key
+from selenium import webdriver
+import requests
+import qrcode
+import time
+import re
+import os
+
+
+
+
+
+
+
+
+
+
 
 proxies = {'http': None, 'https': None}
 base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -23,9 +27,9 @@ chrome_binary_path = os.path.join(base_dir, '附加文件', 'chrome-win', 'chrom
 chrome_driver_path = os.path.join(base_dir, '附加文件', 'chromedriver.exe')
 env_file = os.path.join(base_dir, '附加文件', '.env')
 options = webdriver.ChromeOptions()
+options.binary_location = chrome_binary_path
 options.add_argument("--disable-blink-features=AutomationControlled")
 options.add_argument(f'--user-data-dir={user_data_dir}')
-options.binary_location = chrome_binary_path
 options.add_argument('--proxy-server="direct://"')
 options.add_argument('--proxy-bypass-list=*')
 options.add_argument("--disable-gpu")
@@ -36,20 +40,23 @@ service = Service(executable_path=chrome_driver_path)
 driver = webdriver.Chrome(service=service, options=options)  # 启动 Chrome 浏览器
 driver.set_window_size(1000, 700)  # 设置浏览器窗口大小（宽度, 高度）
 driver.get("https://space.bilibili.com")
-try:
 
+try:
     element = WebDriverWait(driver, 5).until(
         EC.presence_of_element_located(
             (By.XPATH, '//*[@id="app-main"]/div/div[2]/div[1]/div[2]/div[1]/div'))
     )
     title = element.get_attribute('title')
     qr = qrcode.QRCode()
-    qr.border = 1
     qr.add_data(title)
     qr.make()
     qr.print_ascii(out=None, tty=False, invert=False)
+
 except Exception as e:
-    print('无法获取验证码元素')
+    print('无法获取二维码元素')
+
+
+
 
 print('\n等待登陆中\n')
 while True:
