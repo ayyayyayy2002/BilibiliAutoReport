@@ -26,7 +26,7 @@ def capcha(aid):
     options.add_argument('--proxy-bypass-list=*')
     # options.add_argument("--disable-sync")
     # options.add_argument("disable-cache")#禁用缓存
-    #options.add_argument("--headless")
+    options.add_argument("--headless")
     options.add_argument('log-level=3')
     service = Service(executable_path=chrome_driver_path)
     driver = webdriver.Chrome(service=service, options=options)  # 启动 Chrome 浏览器
@@ -142,6 +142,7 @@ def capcha(aid):
             break
         except Exception as e:
             print(f'人机验证出错{e}')
+            exit(100)
 
 
 
