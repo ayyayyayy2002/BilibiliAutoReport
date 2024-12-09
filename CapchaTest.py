@@ -77,6 +77,7 @@ def capcha(aid):
                              data=data, proxies=proxies)
     print(response.text)
 
+    COOKIE = '; '.join(part for part in COOKIE.split('; ') if not part.startswith('x-bili-gaia-vtoken='))
     COOKIE += f'; x-bili-gaia-vtoken={token}'
     headers = {'cookie': COOKIE, 'user-agent': UA}
     params = {
