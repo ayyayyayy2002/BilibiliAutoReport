@@ -8,10 +8,11 @@
 
 ## 写在前面————引用信息🤓☝️ 
 1，此项目的灵感来源于这个油猴脚本：[bilibili批量举报【高危脚本】-油猴中文网](https://bbs.tampermonkey.net.cn/thread-5222-2-1.html)  
-2，项目中的人机验证的代码来自于[MgArcher/Text_select_captcha: 实现文字点选、选字、选择、点触验证码识别，基于pytorch训练](https://github.com/MgArcher/Text_select_captcha/)，感谢大佬  
-3，油猴举报脚本在[这里](https://greasyfork.org/zh-CN/scripts/497079-bilibili%E7%A8%BF%E4%BB%B6%E6%89%B9%E9%87%8F%E4%B8%BE%E6%8A%A5)  
-4，网络请求代码全部来自此网站的转换：[Convert curl commands to code](https://curlconverter.com/)  
-5，此项目的全部代码由[ChatGPT3.5Turbo](https://platform.openai.com/docs/models/gpt-3-5#gpt-3-5-turbo)完成  
+2，项目中用Selenium完成人机验证的代码来自于[MgArcher/Text_select_captcha: 实现文字点选、选字、选择、点触验证码识别，基于pytorch训练](https://github.com/MgArcher/Text_select_captcha/)，感谢大佬  
+3，项目中纯Python破解人机验证的代码来自于[ravizhan/geetest-v3-click-crack: 极验三代文字点选验证码破解 纯Python实现](https://github.com/ravizhan/geetest-v3-click-crack)，感谢大佬 
+4，油猴举报脚本在[这里](https://greasyfork.org/zh-CN/scripts/497079-bilibili%E7%A8%BF%E4%BB%B6%E6%89%B9%E9%87%8F%E4%B8%BE%E6%8A%A5)  
+5，网络请求代码全部来自此网站的转换：[Convert curl commands to code](https://curlconverter.com/)  
+6，此项目的全部代码由[ChatGPT3.5Turbo](https://platform.openai.com/docs/models/gpt-3-5#gpt-3-5-turbo)完成  
 
 ## 此仓库可能包含多个分支，请注意识别🛑
 1，Python+Selenium分支：默认分支，纯Python，浏览器过人机验证，关键词搜索+稍后再看+黑白名单  
