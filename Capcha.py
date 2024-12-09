@@ -1,3 +1,5 @@
+import json
+
 from dotenv import load_dotenv
 import requests
 import re
@@ -7,7 +9,7 @@ from crack import Crack
 from model import Model
 
 
-def capcha(aid, json=None):
+def capcha(aid):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     env_file = os.path.join(base_dir, '附加文件', '.env')
     proxies = {'http': None, 'https': None}
@@ -131,3 +133,5 @@ def capcha(aid, json=None):
     print(response.text)
 
     return COOKIE
+
+
