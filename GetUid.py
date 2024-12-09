@@ -152,7 +152,8 @@ if COOKIE2:
     data = response.json()
     for item in data['data']['list']:
         mid = item['owner']['mid']
-        uids.add(mid)
+        uids.add(int(mid))
+        lists.add(int(mid))
         print(mid)
     data = {'csrf': CSRF2}
     response = requests.post('https://api.bilibili.com/x/v2/history/toview/clear', headers=headers, data=data,proxies=proxies)
@@ -164,10 +165,10 @@ if COOKIE2:
 headers = {'cookie': COOKIE, 'user-agent': UA}
 response = requests.get('https://api.bilibili.com/x/v2/history/toview',  headers=headers,proxies= proxies)
 data = response.json()
-print(response.text)
 for item in data['data']['list']:
     mid = item['owner']['mid']
-    uids.add(mid)
+    uids.add(int(mid))
+    lists.add(int(mid))
     print(mid)
 data = {'csrf': CSRF}
 response = requests.post('https://api.bilibili.com/x/v2/history/toview/clear', headers=headers, data=data,proxies=proxies)
