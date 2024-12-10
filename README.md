@@ -63,7 +63,7 @@
 ## 程序逻辑🧠   
 1，Start.是守护进程，负责启动其他三个程序，运行后会启动Getuid  
 2，Getuid加载关键词列表、黑名单和白名单，请求获取“稍后再看”列表，用关键词搜索得到原始列表。原始列表+白名单=稍后再看-黑名单后，去重，写入文件uid.txt  
-3，处理完uid会自动启动Report和SpaceAndDynamic进行举报，如果中途出错将重新启动Report，如果Report正常退出则重新运行Getuid获得新列表 
+3，处理完uid会自动启动Report和SpaceAndDynamic进行举报，如果中途出错将重新启动Report，如果Report正常退出则重新运行Getuid获得新列表   
 4，需要人机验证时会自动调用Capcha完成验证并更新Cookie  
 5，举报每个UID的所有动态，主页信息和包括合集在内的前200条视频        
 
