@@ -10,9 +10,11 @@
 1，此项目的灵感来源于这个油猴脚本：[bilibili批量举报【高危脚本】-油猴中文网](https://bbs.tampermonkey.net.cn/thread-5222-2-1.html)  
 2，项目中用Selenium完成人机验证的代码来自于[MgArcher/Text_select_captcha: 实现文字点选、选字、选择、点触验证码识别，基于pytorch训练](https://github.com/MgArcher/Text_select_captcha/)，感谢大佬  
 3，项目中纯Python破解人机验证的代码来自于[ravizhan/geetest-v3-click-crack: 极验三代文字点选验证码破解 纯Python实现](https://github.com/ravizhan/geetest-v3-click-crack)，感谢大佬   
-4，油猴举报脚本在[这里](https://greasyfork.org/zh-CN/scripts/497079-bilibili%E7%A8%BF%E4%BB%B6%E6%89%B9%E9%87%8F%E4%B8%BE%E6%8A%A5)  
-5，网络请求代码全部来自此网站的转换：[Convert curl commands to code](https://curlconverter.com/)  
-6，此项目的全部代码由[ChatGPT3.5Turbo](https://platform.openai.com/docs/models/gpt-3-5#gpt-3-5-turbo)完成  
+4，网络请求代码全部来自此网站的转换：[Convert curl commands to code](https://curlconverter.com/)  
+5，此项目的全部代码由[ChatGPT3.5Turbo](https://platform.openai.com/docs/models/gpt-3-5#gpt-3-5-turbo)完成  
+6，油猴举报脚本在[这里](https://github.com/ayyayyayy2002/BilibiliBatchReport)  
+
+
 
 ## 此仓库可能包含多个分支，请注意识别🛑
 1，**Python+Selenium**分支：默认分支，**纯Python，浏览器过人机验证**，关键词搜索+稍后再看+黑白名单  
@@ -21,7 +23,7 @@
 
 
 ## 使用方法（仅限Windows，可能需要下载PyCharm）🐍 
-1，前往[这里](https://github.com/ayyayyayy2002/BilibiliAutoReport/archive/refs/heads/main.zip)下载项目并解压     
+1，前往对应分支页面下载项目并解压     
 2，搜索下载Chromium和对应版本的驱动，并解压后重命名为“chrome-win”和“chromedriver.exe”，移动到“附加文件”  
 2，下载安装[Python3.10](https://www.python.org/downloads/release/python-3100/)  
   
@@ -51,7 +53,12 @@
 另外B站无法通过导入浏览器cookie登录，Linux设备大多不提供图形界面。程序会尝试在终端用字符显示登陆二维码，如图所示：  
 <img src="https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/heads/Python+Selenium/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/%E5%9B%BE%E7%89%87/1.png" alt="如图所示" width="600" />  
 
-    
+## 更加详细的配置🤩     
+1，keywords文件存储搜索关键词，每行一个，用“#”号禁用，**只会被读取，不会被写入**   
+2，black文件是黑名单，里面的UID永远不会被举报，**只会被读取，不会被写入**  
+3，white文件是白名单，里面的UID在每次循环都会被举报，**只会被读取，不会被写入**  
+4，list文件用于收集稍后再看列表，用于手动巡查标记目标，**会被读取，也会被写入**  
+5，.env是程序存储变量用的文件，也可以手动配置第二账号的cookie，**会被读取，也会被写入**  
 
 ## 程序逻辑🧠   
 1，Start.是守护进程，负责启动其他三个程序，运行后会启动Getuid  
