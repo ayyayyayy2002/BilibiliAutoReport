@@ -12,12 +12,13 @@ import re
 import os
 
 
-def capcha(aid):
+def capcha(aid,i):
+    path_name = f'User Data{i}'
     proxies = {'http': None, 'https': None}
     base_dir = os.path.dirname(os.path.abspath(__file__))
     chrome_driver_path = os.path.join(base_dir, '附加文件', 'chromedriver.exe')
     chrome_binary_path = os.path.join(base_dir, '附加文件', 'chrome-win', 'chrome.exe')
-    user_data_dir = os.path.join(base_dir, '附加文件', 'User Data')
+    user_data_dir = os.path.join(base_dir, '附加文件', 'User Data',path_name)
     options = webdriver.ChromeOptions()
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument(f'--user-data-dir={user_data_dir}')  # 设置用户数据目录
