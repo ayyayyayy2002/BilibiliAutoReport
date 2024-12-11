@@ -69,6 +69,7 @@ for uid in uids:
                 has_more = data['data']['has_more']
             else:
                 print("JSON 对象中不包含 'data' 字段")
+                print(response.text)
                 offset = ''
                 has_more = ''
                 id_strs = []
