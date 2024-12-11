@@ -53,13 +53,9 @@
 1，安装Python3.10，和Chrome浏览器  
 2，安装Git或者手动下载指定分支的压缩包  
 3，定位至项目目录，运行 `pip3 install -r requirements.txt` 安装依赖，如果报错请上网搜索教程  
-4，运行 `python3 AAA.py` ，输入账号数量，并扫码登录  
+4，运行 `python3 AAA.py` ，输入账号数量，并扫描终端上的二维码登录  
 5，运行 `python3 Start.py` ，启动程序   
 
-
- 
-另外B站无法通过导入浏览器cookie登录，Linux设备大多不提供图形界面。程序会尝试在终端用字符显示登陆二维码，如图所示：  
-<img src="https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/heads/Python%2BSelenium%2BWindows/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/%E5%9B%BE%E7%89%87/1.png" alt="如图所示" width="600" />  
 
 ## 更加详细的配置🤩     
 1，keywords文件存储搜索关键词，每行一个，用“#”号禁用，**只会被读取，不会被写入**   
