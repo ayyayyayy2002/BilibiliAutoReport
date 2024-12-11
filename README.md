@@ -48,9 +48,16 @@
 </details>  
 4，脚本已运行  
 
-## Linux系统使用方法（未尝试）❗
-本项目理论上支持Linux系统，仅需要修改浏览器和驱动可执行文件名称即可。  
-值得注意的是，Chrome和Chromium浏览器官方不支持某些架构。如：ARM32Linux的玩客云盒子，此类设备只能运行针对动态和主页的举报，无法完成视频的举报。  
+## Linux系统使用方法（在阿里云2核2GECS，Ubuntu系统下进行尝试，可免费试用）😋
+推荐使用WinSCP和阿里云的网页终端，WinSCP用来传输文件，网页终端用来执行命令  
+1，安装Python3.10，和Chrome浏览器  
+2，安装Git或者手动下载指定分支的压缩包  
+3，定位至项目目录，运行 `pip3 install -r requirements.txt` 安装依赖，如果报错请上网搜索教程  
+4，运行 `python3 AAA.py` ，输入账号数量，并扫码登录  
+5，运行 `python3 Start.py` ，启动程序   
+
+
+ 
 另外B站无法通过导入浏览器cookie登录，Linux设备大多不提供图形界面。程序会尝试在终端用字符显示登陆二维码，如图所示：  
 <img src="https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/heads/Python%2BSelenium%2BWindows/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/%E5%9B%BE%E7%89%87/1.png" alt="如图所示" width="600" />  
 
