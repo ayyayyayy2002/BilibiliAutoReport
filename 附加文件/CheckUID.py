@@ -9,6 +9,7 @@ user_data_dir = os.path.join(base_dir,  'User Data')
 chrome_binary_path = os.path.join(base_dir,  'chrome-win', 'chrome.exe')
 chrome_driver_path = os.path.join(base_dir,  'chromedriver.exe')
 options = webdriver.ChromeOptions()
+options.add_argument("--no-sandbox")
 options.add_argument("--disable-blink-features=AutomationControlled")
 options.add_argument(f'--user-data-dir={user_data_dir}')
 options.binary_location = chrome_binary_path
