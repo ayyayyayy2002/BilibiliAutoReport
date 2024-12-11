@@ -17,16 +17,19 @@ list_file = os.path.join(base_dir, '附加文件', 'list')
 white_file = os.path.join(base_dir, '附加文件', 'white')
 black_file = os.path.join(base_dir, '附加文件', 'black')
 keywords_file = os.path.join(base_dir, '附加文件', 'keywords')
-search_log_path = os.path.join(base_dir, '运行记录','搜索记录')
+search_log_path = os.path.join(base_dir, '运行记录', '搜索记录')
 ########################################################################################################################
 uid_file = os.path.join(base_dir, '附加文件', 'uid.txt')
 env_file = os.path.join(base_dir, '附加文件', '.env')
+load_dotenv(dotenv_path=env_file)
 proxies = {'http': None, 'https': None}
+COOKIE1 = os.getenv('COOKIE1')
+N = os.getenv('N')
+UA = os.getenv('UA')
 uids = set()
 keywords = set()
 uid_list = set()
 lists = set()
-
 
 if os.path.exists(uid_file):
     with open(uid_file, 'r', encoding='utf-8') as f:  # 以读取模式打开文件
@@ -51,13 +54,10 @@ with open(keywords_file, 'r', encoding='utf-8') as f:
         if stripped_line and not stripped_line.startswith('#'):  # 排除空行和以“#”开头的行
             keywords.add(stripped_line)
 
-
-
-
 base_dir = os.path.dirname(os.path.abspath(__file__))
 user_data_dir = os.path.join(base_dir, '附加文件', 'User Data')
 chrome_binary_path = os.path.join(base_dir, '附加文件', 'chrome-win', 'chrome.exe')
-chrome_driver_path = os.path.join(base_dir, '附加文件',  'chromedriver.exe')
+chrome_driver_path = os.path.join(base_dir, '附加文件', 'chromedriver.exe')
 options = webdriver.ChromeOptions()
 options.add_argument("--disable-blink-features=AutomationControlled")
 options.add_argument(f'--user-data-dir={user_data_dir}')
@@ -70,15 +70,14 @@ options.add_argument("--disable-sync")
 options.add_argument("disable-cache")
 options.add_argument('log-level=3')
 service = Service(executable_path=chrome_driver_path)
-driver = webdriver.Chrome( service = service, options=options)  # 启动 Chrome 浏览器
+driver = webdriver.Chrome(service=service, options=options)  # 启动 Chrome 浏览器
 driver.set_window_size(1000, 700)  # 设置浏览器窗口大小（宽度, 高度）
-
-
 
 for keyword in keywords:  # 遍历关键词列表，进行搜索和处理
     default = f'https://search.bilibili.com/video?keyword={quote(keyword)}&from_source=video_tag'
     driver.get(default)
-    elements = driver.find_elements(By.XPATH,"//*[@id='i_cecream']/div/div[2]/div[2]/div/div/div[1]/div/div/div[2]/div/div/div/a")
+    elements = driver.find_elements(By.XPATH,
+                                    "//*[@id='i_cecream']/div/div[2]/div[2]/div/div/div[1]/div/div/div[2]/div/div/div/a")
     uid_list.clear()
     count = 0
     for element in elements:
@@ -90,17 +89,17 @@ for keyword in keywords:  # 遍历关键词列表，进行搜索和处理
         uids.add(uid)
         uid_list.add(uid)  # 添加 UID 到集合中
         count += 1
-        if count >= 30:
+        if count >= 5:
             break
     print(f'\n关键词：{keyword}  默认排序结果：\n{uid_list}')
     with open(uid_file, 'a', encoding='utf-8') as f:
         f.write(f'\n关键词：{keyword}  默认排序结果：\n{uid_list}')
     print(default)
 
-
     pubdate = f'https://search.bilibili.com/video?keyword={quote(keyword)}&from_source=video_tag&order=pubdate'
     driver.get(pubdate)
-    elements = driver.find_elements(By.XPATH,"//*[@id='i_cecream']/div/div[2]/div[2]/div/div/div[1]/div/div/div[2]/div/div/div/a")
+    elements = driver.find_elements(By.XPATH,
+                                    "//*[@id='i_cecream']/div/div[2]/div[2]/div/div/div[1]/div/div/div[2]/div/div/div/a")
     uid_list.clear()
     count = 0
     for element in elements:
@@ -112,14 +111,12 @@ for keyword in keywords:  # 遍历关键词列表，进行搜索和处理
         uids.add(uid)
         uid_list.add(uid)  # 添加 UID 到集合中
         count += 1
-        if count >= 30:
+        if count >= 5:
             break
     print(f'\n关键词：{keyword}  时间排序结果：\n{uid_list}')
     with open(uid_file, 'a', encoding='utf-8') as f:
         f.write(f'\n关键词：{keyword}  时间排序结果：\n{uid_list}')
     print(pubdate)
-
-
 
 try:
     # 获取当前时间并格式化
@@ -130,51 +127,26 @@ try:
 except IOError as e:
     print(f"保存备份时发生错误：{e}")
 
+for i in range(1, int(N) + 1):  # 假设我们要设置 COOKIE1 到 COOKIE3
+    cookie_name = f'COOKIE{i}'  # 使用格式字符串生成变量名
+    path_name = f'User Data{i}'
+    COOKIE = os.getenv(cookie_name)
+    CSRF = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
+    print(f'正在处理第{i}个账号')
 
-driver.get("https://space.bilibili.com")
-cookies = driver.get_cookies()
-COOKIE = '; '.join([f"{cookie['name']}={cookie['value']}" for cookie in cookies])
-UA = driver.execute_script("return navigator.userAgent;")
-CSRF = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
-load_dotenv(dotenv_path=env_file)
-os.environ['UA'] = UA
-os.environ['COOKIE'] = COOKIE
-set_key(env_file, 'UA', UA)
-set_key(env_file, 'COOKIE', COOKIE)
-COOKIE2 = os.getenv('COOKIE2')
-
-
-
-if COOKIE2:
-    CSRF2 = re.search(r'bili_jct=([^;]*)', COOKIE2).group(1)
-    headers = {'cookie': COOKIE2, 'user-agent': UA}
-    response = requests.get('https://api.bilibili.com/x/v2/history/toview', headers=headers, proxies=proxies)
+    headers = {'cookie': COOKIE, 'user-agent': UA}
+    response = requests.get('https://api.bilibili.com/x/v2/history/toview', headers=headers, proxies=proxies,
+                            timeout=(3, 3))
     data = response.json()
     for item in data['data']['list']:
         mid = item['owner']['mid']
         uids.add(int(mid))
         lists.add(int(mid))
         print(mid)
-    data = {'csrf': CSRF2}
-    response = requests.post('https://api.bilibili.com/x/v2/history/toview/clear', headers=headers, data=data,proxies=proxies)
+    data = {'csrf': CSRF}
+    response = requests.post('https://api.bilibili.com/x/v2/history/toview/clear', headers=headers, data=data,
+                             proxies=proxies, timeout=(3, 3))
     print(response.text)
-
-
-
-
-headers = {'cookie': COOKIE, 'user-agent': UA}
-response = requests.get('https://api.bilibili.com/x/v2/history/toview',  headers=headers,proxies= proxies)
-data = response.json()
-for item in data['data']['list']:
-    mid = item['owner']['mid']
-    uids.add(int(mid))
-    lists.add(int(mid))
-    print(mid)
-data = {'csrf': CSRF}
-response = requests.post('https://api.bilibili.com/x/v2/history/toview/clear', headers=headers, data=data,proxies=proxies)
-print(response.text)
-
-
 
 with open(white_file, 'r', encoding='utf-8') as file:
     lines = file.readlines()
@@ -191,14 +163,11 @@ with open(black_file, 'r', encoding='utf-8') as file:
             uids.discard(int(uid))
             lists.discard(int(uid))
 
-
-
 with open(uid_file, 'w', encoding='utf-8') as file:
     for uid in uids:
-        #uid = int(uid)
+        # uid = int(uid)
         file.write(f'{uid}\n')
 print('UID获取完成')
-
 
 lists = sorted(lists)
 with open(list_file, 'w', encoding='utf-8') as file:
