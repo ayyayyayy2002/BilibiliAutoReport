@@ -8,7 +8,7 @@ import re
 import os
 
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+
 from selenium.webdriver.common.by import By
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -55,22 +55,19 @@ with open(keywords_file, 'r', encoding='utf-8') as f:
             keywords.add(stripped_line)
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-user_data_dir = os.path.join(base_dir, '附加文件', 'User Data')
-chrome_binary_path = os.path.join(base_dir, '附加文件', 'chrome-win', 'chrome.exe')
-chrome_driver_path = os.path.join(base_dir, '附加文件', 'chromedriver.exe')
+user_data_dir = os.path.join(base_dir, '附加文件', 'User Data','User Data1')
 options = webdriver.ChromeOptions()
 options.add_argument("--disable-blink-features=AutomationControlled")
 options.add_argument(f'--user-data-dir={user_data_dir}')
 options.add_argument("--headless")
-options.binary_location = chrome_binary_path
+options.add_argument("--no-sandbox")
 options.add_argument('--proxy-server="direct://"')
 options.add_argument('--proxy-bypass-list=*')
 options.add_argument("--disable-gpu")
 options.add_argument("--disable-sync")
 options.add_argument("disable-cache")
 options.add_argument('log-level=3')
-service = Service(executable_path=chrome_driver_path)
-driver = webdriver.Chrome(service=service, options=options)  # 启动 Chrome 浏览器
+driver = webdriver.Chrome(options=options)  # 启动 Chrome 浏览器
 driver.set_window_size(1000, 700)  # 设置浏览器窗口大小（宽度, 高度）
 
 for keyword in keywords:  # 遍历关键词列表，进行搜索和处理
