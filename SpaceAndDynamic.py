@@ -10,9 +10,8 @@ uid_file = os.path.join(base_dir, '附加文件', 'uid.txt')
 
 env_file = os.path.join(base_dir, '附加文件', '.env')
 load_dotenv(dotenv_path=env_file)
-COOKIE = os.getenv('COOKIE')
 UA = os.getenv('UA')
-CSRF = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
+N = os.getenv('N')
 uids = set()
 
 
@@ -34,50 +33,65 @@ if not uids:
 
 
 
-reportcount = 0
 for uid in uids:
-    csrf = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
-    headers = {'cookie': COOKIE, 'user-agent': UA}
-    data = {
-        'mid': uid,
-        'reason': '1,2,3',
-        'reason_v2': '3',
-        'csrf': csrf, }
-    response = requests.post('https://space.bilibili.com/ajax/report/add', headers=headers, data=data, proxies=proxies)
-    print(response.text)
+    print(uid)
 
-    offset = ''
-    csrf = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
+    for i in range(1, int(N) + 1):
+        reportcount = 0
+        cookie_name = f'COOKIE{i}'
+        COOKIE = os.getenv(cookie_name)
+        CSRF = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
 
-    while True:
+
+
         headers = {'cookie': COOKIE, 'user-agent': UA}
-        params = {
-            'host_mid': uid,
-            'offset': offset,}
-        response = requests.get('https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all',params=params,headers=headers,proxies = proxies)
-        data = response.json()
-        id_strs = [item['id_str'] for item in data['data']['items']]
-        offset = data['data']['offset']
-        has_more = data['data']['has_more']
-        # 打印结果
-        #print(has_more)
-        #print(id_strs)
-        #print(offset)
-        for id_str in id_strs:
-            reportcount += 1
+        data = {
+            'mid': uid,
+            'reason': '1,2,3',
+            'reason_v2': '3',
+            'csrf': CSRF, }
+        response = requests.post('https://space.bilibili.com/ajax/report/add', headers=headers, data=data, proxies=proxies)
+        print(response.text)
+
+        offset = ''
+        csrf = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
+
+        while True:
             headers = {'cookie': COOKIE, 'user-agent': UA}
-            params = {'csrf': csrf,}
-            json_data = {
-                'accused_uid': int(uid),
-                'dynamic_id': id_str,
-                'reason_type': 4,
-                'reason_desc': None,}
-            response = requests.post('https://api.bilibili.com/x/dynamic/feed/dynamic_report/add',params=params,headers=headers,json=json_data,proxies=proxies)
-            print(f'动态{reportcount:03}:{response.text}')
-        id_strs.clear()
-        if not has_more:
-            reportcount = 0
-            break
+            params = {
+                'host_mid': uid,
+                'offset': offset,}
+            response = requests.get('https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all',params=params,headers=headers,proxies = proxies,timeout=(3,3))
+            data = response.json()
+            if 'data' in data:
+                id_strs = [item['id_str'] for item in data['data']['items']]
+                offset = data['data']['offset']
+                has_more = data['data']['has_more']
+            else:
+                print("JSON 对象中不包含 'data' 字段")
+                offset = ''
+                has_more = ''
+                id_strs = []
+
+
+            # 打印结果
+            #print(has_more)
+            #print(id_strs)
+            #print(offset)
+            for id_str in id_strs:
+                reportcount += 1
+                headers = {'cookie': COOKIE, 'user-agent': UA}
+                params = {'csrf': csrf,}
+                json_data = {
+                    'accused_uid': int(uid),
+                    'dynamic_id': id_str,
+                    'reason_type': 1,
+                    'reason_desc': None,}
+                response = requests.post('https://api.bilibili.com/x/dynamic/feed/dynamic_report/add',params=params,headers=headers,json=json_data,proxies=proxies,timeout=(3,3))
+                print(f'账号{i}动态{reportcount:03}:{response.text}')
+            id_strs.clear()
+            if not has_more:
+                break
 
 
 
