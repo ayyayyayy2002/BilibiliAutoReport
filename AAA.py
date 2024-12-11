@@ -22,7 +22,7 @@ load_dotenv(dotenv_path=env_file)
 
 while True:
     try:
-        N = int(input("输入: "))
+        N = int(input("输入账号总数: "))
         print(f"读取到: {N}")
         set_key(env_file, 'N', str(N))
         break
