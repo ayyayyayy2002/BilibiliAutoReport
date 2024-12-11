@@ -1,4 +1,4 @@
-from dotenv import load_dotenv
+from dotenv import load_dotenv, set_key
 from datetime import datetime
 from Capcha import capcha
 import requests
@@ -16,11 +16,15 @@ env_file = os.path.join(base_dir, '附加文件', '.env')
 proxies = {'http': None, 'https': None}
 uids = set()
 load_dotenv(dotenv_path=env_file)
-COOKIE = os.getenv('COOKIE')
-MEDIAID = os.getenv('MEDIAID')
 UA = os.getenv('UA')
-CSRF = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
+N = os.getenv('N')
+COOKIE1 = os.getenv('COOKIE1')
 ########################################################################################################################
+
+
+
+
+
 
 with open(log_file, 'a', encoding='utf-8') as log:
     timestamp = datetime.now().strftime('[%Y-%m-%d %H-%M-%S]')
@@ -57,8 +61,7 @@ for uid in uids:
     except Exception as e:
         print(f"删除UID时发生错误: {e}")
 
-    reportcount = 0
-    headers = {'cookie': COOKIE, 'user-agent': UA}
+    headers = {'cookie': COOKIE1, 'user-agent': UA}
     search_url = f'https://api.bilibili.com/x/polymer/space/seasons_series_list?mid={uid}&page_num=1&page_size=5'
     response = requests.get(search_url, headers=headers, proxies=proxies, timeout=(5, 10))
     data = response.json()
@@ -67,8 +70,8 @@ for uid in uids:
 
         for season_id in season_ids:
             search_url = f'https://api.bilibili.com/x/polymer/space/seasons_archives_list?mid={uid}&sort_reverse=false&season_id={season_id}&page_num=1&page_size=30'
-            headers = {'cookie': COOKIE, 'user-agent': UA}
-            response = requests.get(search_url, headers=headers, proxies=proxies, timeout=(5, 10))
+            headers = {'cookie': COOKIE1, 'user-agent': UA}
+            response = requests.get(search_url, headers=headers, proxies=proxies, timeout=(3,3))
             data = response.json()
             if 'data' in data and 'archives' in data['data']:
                 for archive in data['data']['archives']:
@@ -77,65 +80,66 @@ for uid in uids:
                     pics.append(archive['pic'])  # 添加 pic 到列表
 
     search_url = f'https://api.bilibili.com/x/series/recArchivesByKeywords?mid={uid}&keywords=&ps=0'
-    headers = {'cookie': COOKIE, 'user-agent': UA}
-    response = requests.get(search_url, headers=headers, proxies=proxies, timeout=(5, 10))
+    headers = {'cookie': COOKIE1, 'user-agent': UA}
+    response = requests.get(search_url, headers=headers, proxies=proxies, timeout=(3, 3))
     data = response.json()
     for archive in data['data']['archives']:
         aids.append(archive['aid'])
         titles.append(archive['title'])
         pics.append(archive['pic'])
 
+    try:
+        aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
+        with open(aid_log_file, 'w', encoding='utf-8') as file:
+            for aid in aids:
+                file.write(f'{aid}\n')
+    except IOError as e:
+        print(f"保存备份时发生错误：{e}")
+
+    for i in range(1, int(N) + 1):
+        reportcount = 0
+        cookie_name = f'COOKIE{i}'
+        tid_name = f'TID{i}'
+        desc_name = f'DESC{i}'
+        COOKIE = os.getenv(cookie_name)
+        TID = os.getenv(tid_name)
+        DESC = os.getenv(desc_name)
+        CSRF = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
 
 
-    if aids and aids[0]:
-        headers = {'cookie': COOKIE, 'user-agent': UA}
-        data = {
-            'rid': aids[0],
-            'type': '2',
-            'add_media_ids': MEDIAID,
-            'del_media_ids': '',
-            'platform': 'web',
-            'eab_x': '2',
-            'ramval': '0',
-            'ga': '1',
-            'gaia_source': 'web_normal',
-            'csrf': CSRF,}
-        response = requests.post('https://api.bilibili.com/x/v3/fav/resource/deal',  headers=headers, data=data,proxies=proxies)
-        print(f'收藏{aids[0]}:{response.text}')
-        print(f'\nhttps://space.bilibili.com/{uid}\n')
+        for aid, title, pic in zip(aids, titles, pics):
+            reportcount += 1
+            time.sleep(2.3)
+            headers = {'cookie': COOKIE, 'user-agent': UA}
+            data = {
+                'aid': aid,
+                'attach': pic,
+                'block_author': 'false',
+                'csrf': CSRF,
+                'desc': DESC.format(title=title),
+                'tid': TID
+            }
+            response = requests.post('https://api.bilibili.com/x/web-interface/appeal/v2/submit', headers=headers,data=data, proxies=proxies,timeout=(3,3))
+            print(f'账号{i}视频{reportcount:03}:{response.text}')
+
+            if "62009" in response.text or reportcount >= 200:
+                break
+            elif "-352" in response.text:
+                COOKIE = capcha(aid,i)
+                set_key(env_file, cookie_name, COOKIE)
 
 
-
-
-        try:
-            aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
-            with open(aid_log_file, 'w', encoding='utf-8') as file:
-                for aid in aids:
-                    file.write(f'{aid}\n')
-        except IOError as e:
-            print(f"保存备份时发生错误：{e}")
-
-
-    for aid, title, pic in zip(aids, titles, pics):
-        reportcount += 1
-        time.sleep(2.3)
-        headers = {'cookie': COOKIE, 'user-agent': UA}
-        data = {
-            'aid': aid,
-            'attach': pic,
-            'block_author': 'false',
-            'csrf': CSRF,
-            'desc': f'视频标题{title}、视频封面以及视频内容违规，推广以原神、碧蓝档案等二次元游戏人物为主角的色情视频，侮辱国家领导人，宣扬台独反华内容。审核结果：下架此视频并永久封禁该账号',
-            'tid': '10014'
-        }
-        response = requests.post('https://api.bilibili.com/x/web-interface/appeal/v2/submit', headers=headers,data=data, proxies=proxies)
-        print(f'视频{reportcount:03}:{response.text}')
-        if "62009" in response.text or reportcount >= 200:
-            break
-        elif "-352" in response.text:
-            COOKIE = capcha(aid)
-            os.environ['COOKIE'] = COOKIE
-
+            elif "412" in response.text:
+                print('被风控，等待五分钟')
+                time.sleep(60)
+                print('还剩4分钟')
+                time.sleep(60)
+                print('还剩3分钟')
+                time.sleep(60)
+                print('还剩2分钟')
+                time.sleep(60)
+                print('还剩1分钟')
+                time.sleep(60)
 
 
 with open(log_file, 'a', encoding='utf-8') as log:
