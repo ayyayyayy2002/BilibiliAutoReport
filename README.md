@@ -1,5 +1,5 @@
 # BilibiliAutoReport  
-## 使用[关键词](https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/heads/Python+Selenium/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/keywords)搜索视频，举报作者的头像、签名、昵称、视频和动态  
+## 使用[关键词](https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/headsPython%2BSelenium%2BWindows/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/keywords)搜索视频，举报作者的头像、签名、昵称、视频和动态  
 ## 使用条款与免责声明
 本项目是开源的，遵循以下条款和条件。请在使用本项目之前仔细阅读。
 1. **无保证**：本项目以“现状”提供，不附带任何形式的明示或暗示保证，包括但不限于对适销性、特定用途适用性及不侵权的保证。  
@@ -17,7 +17,7 @@
 
 
 ## 此仓库包含多个分支，请注意识别🛑
-1，[**Python+Selenium**](https://github.com/ayyayyayy2002/BilibiliAutoReport/tree/Python%2BSelenium)分支：默认分支，**纯Python，浏览器过人机验证**，关键词搜索+稍后再看+黑白名单  
+1，[**Python+Selenium**](https://github.com/ayyayyayy2002/BilibiliAutoReport/tree/Python%2BSelenium%2BWindows)分支：默认分支，**纯Python，浏览器过人机验证**，关键词搜索+稍后再看+黑白名单  
 2，[**Python+Selenium+JavaScript**](https://github.com/ayyayyayy2002/BilibiliAutoReport/tree/Python%2BSelenium%2BJavascript)分支：**Python结构，JavaScript举报，浏览器过人机验证**，关键词搜索+稍后再看+黑白名单  
 3，[**Python**](https://github.com/ayyayyayy2002/BilibiliAutoReport/tree/Python)分支：**纯Python实现，破解人机验证**，稍后再看+黑白名单,不需要浏览器，但是运行一段时间后会被风控  
 
@@ -51,7 +51,7 @@
 本项目理论上支持Linux系统，仅需要修改浏览器和驱动可执行文件名称即可。  
 值得注意的是，Chrome和Chromium浏览器官方不支持某些架构。如：ARM32Linux的玩客云盒子，此类设备只能运行针对动态和主页的举报，无法完成视频的举报。  
 另外B站无法通过导入浏览器cookie登录，Linux设备大多不提供图形界面。程序会尝试在终端用字符显示登陆二维码，如图所示：  
-<img src="https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/heads/Python+Selenium/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/%E5%9B%BE%E7%89%87/1.png" alt="如图所示" width="600" />  
+<img src="https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/heads/Python%2BSelenium%2BWindows/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/%E5%9B%BE%E7%89%87/1.png" alt="如图所示" width="600" />  
 
 ## 更加详细的配置🤩     
 1，keywords文件存储搜索关键词，每行一个，用“#”号禁用，**只会被读取，不会被写入**   
