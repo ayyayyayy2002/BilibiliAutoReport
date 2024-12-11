@@ -45,6 +45,7 @@ for i in range(1, N+1):  # 假设我们要设置 COOKIE1 到 COOKIE3
     options = webdriver.ChromeOptions()
     options.binary_location = chrome_binary_path
     options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_argument("--no-sandbox")
     options.add_argument(f'--user-data-dir={user_data_dir}')
     options.add_argument('--proxy-server="direct://"')
     options.add_argument('--proxy-bypass-list=*')
