@@ -13,8 +13,6 @@ import os
 ########################################################################################################################
 proxies = {'http': None, 'https': None}
 base_dir = os.path.dirname(os.path.abspath(__file__))
-chrome_binary_path = os.path.join(base_dir, '附加文件', 'chrome-win', 'chrome.exe')
-chrome_driver_path = os.path.join(base_dir, '附加文件', 'chromedriver.exe')
 env_file = os.path.join(base_dir, '附加文件', '.env')
 load_dotenv(dotenv_path=env_file)
 
@@ -22,7 +20,7 @@ load_dotenv(dotenv_path=env_file)
 
 while True:
     try:
-        N = int(input("输入: "))
+        N = int(input("输入账号总数: "))
         print(f"读取到: {N}")
         set_key(env_file, 'N', str(N))
         break
@@ -43,17 +41,18 @@ for i in range(1, N+1):  # 假设我们要设置 COOKIE1 到 COOKIE3
 
     user_data_dir = os.path.join(base_dir, '附加文件', 'User Data',path_name)
     options = webdriver.ChromeOptions()
-    options.binary_location = chrome_binary_path
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument(f'--user-data-dir={user_data_dir}')
     options.add_argument('--proxy-server="direct://"')
     options.add_argument('--proxy-bypass-list=*')
     options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument('no-sandbox')  # 加上此项，不报错
     options.add_argument("--disable-sync")
+    options.add_argument("--headless")
     options.add_argument("disable-cache")  # 禁用缓存
     options.add_argument('log-level=3')
-    service = Service(executable_path=chrome_driver_path)
-    driver = webdriver.Chrome(service=service, options=options)  # 启动 Chrome 浏览器
+    driver = webdriver.Chrome(options=options)  # 启动 Chrome 浏览器
     driver.set_window_size(1000, 700)  # 设置浏览器窗口大小（宽度, 高度）
     driver.get("https://space.bilibili.com")
     print(f'\n账号{i}等待登陆中\n')
