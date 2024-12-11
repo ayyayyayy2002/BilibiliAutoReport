@@ -55,11 +55,12 @@ with open(keywords_file, 'r', encoding='utf-8') as f:
             keywords.add(stripped_line)
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-user_data_dir = os.path.join(base_dir, '附加文件', 'User Data')
+user_data_dir = os.path.join(base_dir, '附加文件', 'User Data','User Data1')
 chrome_binary_path = os.path.join(base_dir, '附加文件', 'chrome-win', 'chrome.exe')
 chrome_driver_path = os.path.join(base_dir, '附加文件', 'chromedriver.exe')
 options = webdriver.ChromeOptions()
 options.add_argument("--disable-blink-features=AutomationControlled")
+options.add_argument("--no-sandbox")
 options.add_argument(f'--user-data-dir={user_data_dir}')
 options.add_argument("--headless")
 options.binary_location = chrome_binary_path
