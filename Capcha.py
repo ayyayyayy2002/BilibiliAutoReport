@@ -21,6 +21,7 @@ def capcha(aid,i):
     user_data_dir = os.path.join(base_dir, '附加文件', 'User Data',path_name)
     options = webdriver.ChromeOptions()
     options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_argument("--no-sandbox")
     options.add_argument(f'--user-data-dir={user_data_dir}')  # 设置用户数据目录
     options.binary_location = chrome_binary_path  # 指定 Chrome 浏览器的可执行文件路径
     options.add_argument('--proxy-server="direct://"')
