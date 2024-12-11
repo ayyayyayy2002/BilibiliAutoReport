@@ -1,4 +1,4 @@
-# BilibiliAutoReport  
+# BilibiliAutoReport  “哔哩举报机”  
 ## 使用[关键词](https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/heads/Python%2BSelenium%2BWindows/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/keywords)搜索视频，并举报作者的视频、动态、昵称、签名和头像，支持Win+Linux双平台，支持多账号，可过人机验证  
 ## 使用条款与免责声明
 本项目是开源的，遵循以下条款和条件。请在使用本项目之前仔细阅读。
