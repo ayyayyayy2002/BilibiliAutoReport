@@ -1,6 +1,6 @@
 ![BilibiliAutoReport](https://socialify.git.ci/ayyayyayy2002/BilibiliAutoReport/image?description=1&font=Bitter&forks=1&issues=1&language=1&name=1&owner=1&pattern=Diagonal%20Stripes&stargazers=1&theme=Auto)
 # “哔哩举报机(●'◡'●)”  
-## 使用[关键词](https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/heads/Python%2BSelenium%2BWindows/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/keywords)搜索视频，并举报作者的视频、动态、昵称、签名和头像，支持Win+Linux双平台，支持多账号，可过人机验证  
+### 使用[关键词](https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/heads/Python%2BSelenium%2BWindows/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/keywords)搜索视频，并举报作者的视频、动态、昵称、签名和头像，支持Win+Linux双平台，支持多账号，可过人机验证  
 ## 使用条款与免责声明
 本项目是开源的，遵循以下条款和条件。请在使用本项目之前仔细阅读。
 1. **无保证**：本项目以“现状”提供，不附带任何形式的明示或暗示保证，包括但不限于对适销性、特定用途适用性及不侵权的保证。  
