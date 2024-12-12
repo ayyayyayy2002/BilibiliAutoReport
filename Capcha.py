@@ -94,9 +94,11 @@ def capcha(aid):
             validate = data['data']['validate']
             print("validate 存在:", validate)
         else:
+            print(response.text)
             print("validate 不存在")
             validate = ''
     else:
+        print(response.text)
         print("validate 不存在")
         validate = ''
 
