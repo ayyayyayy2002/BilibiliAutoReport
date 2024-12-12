@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from datetime import datetime
-from CapchaTest import capcha
+#from CapchaTest import capcha
+from Capcha import capcha
 import requests
 import time
 import re
