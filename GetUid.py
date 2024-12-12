@@ -72,6 +72,7 @@ if COOKIE2:
 
 headers = {'cookie': COOKIE, 'user-agent': UA}
 response = requests.get('https://api.bilibili.com/x/v2/history/toview',  headers=headers,proxies= proxies)
+print(response.text)
 data = response.json()
 for item in data['data']['list']:
     mid = item['owner']['mid']
