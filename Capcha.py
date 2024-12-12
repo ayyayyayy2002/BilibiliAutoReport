@@ -90,8 +90,12 @@ def capcha(aid):
     # 检查 'data' 中是否包含 'validate' 键
     if isinstance(data, dict) and 'data' in data:
 
-        validate = data['data']['validate']
-        print("validate 存在:", validate)
+        if data['data']['validate']:
+            validate = data['data']['validate']
+            print("validate 存在:", validate)
+        else:
+            print("validate 不存在")
+            validate = ''
     else:
         print("validate 不存在")
         validate = ''
