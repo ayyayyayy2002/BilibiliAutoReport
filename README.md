@@ -13,7 +13,7 @@
 3，项目中纯Python破解人机验证的代码来自于[ravizhan/geetest-v3-click-crack: 极验三代文字点选验证码破解 纯Python实现](https://github.com/ravizhan/geetest-v3-click-crack)，感谢大佬   
 4，网络请求代码全部来自此网站的转换：[Convert curl commands to code](https://curlconverter.com/)  
 5，使用此网站为你的仓库添加头图：[GitHub Socialify](https://socialify.git.ci/)  
-6，此网站可以为仓库添加Star统计图：[GitHub Socialify](https://star-history.com/)  
+6，此网站可以为仓库添加Star统计图：[GitHub Star History](https://star-history.com/)  
 7，此项目的全部代码由[ChatGPT3.5Turbo](https://platform.openai.com/docs/models/gpt-3-5#gpt-3-5-turbo)完成  
 8，油猴举报脚本在[这里](https://github.com/ayyayyayy2002/BilibiliBatchReport)  
 
