@@ -60,12 +60,12 @@ for uid in uids:
             headers = {'cookie': COOKIE, 'user-agent': UA}
             params = {
                 'host_mid': uid,
-                'type':'article',
                 'offset': offset,}
-            response = requests.get('https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space',params=params,headers=headers,proxies = proxies,timeout=(3,3))
+            response = requests.get('https://api.bilibili.com/x/polymer/web-dynamic/v1/opus/feed/space',params=params,headers=headers,proxies = proxies,timeout=(3,3))
+           #response = requests.get('https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all',params=params,headers=headers,proxies = proxies,timeout=(3,3))
             data = response.json()
             if 'data' in data:
-                id_strs = [item['id_str'] for item in data['data']['items']]
+                opus_ids = [item['opus_id'] for item in data['data']['items']]
                 offset = data['data']['offset']
                 has_more = data['data']['has_more']
             else:
@@ -78,20 +78,20 @@ for uid in uids:
 
             # 打印结果
             #print(has_more)
-            #print(id_strs)
+            print(opus_ids)
             #print(offset)
-            for id_str in id_strs:
+            for opus_id in opus_ids:
                 reportcount += 1
                 headers = {'cookie': COOKIE, 'user-agent': UA}
                 params = {'csrf': csrf,}
                 json_data = {
                     'accused_uid': int(uid),
-                    'dynamic_id': id_str,
+                    'dynamic_id': opus_id,
                     'reason_type': 0,
                     'reason_desc': '违规行为：在标题及评论中支持“台独”行为，并辱骂讽刺政府和领导人。诉求：删除此动态并处罚发送此视频的账号',}
                 response = requests.post('https://api.bilibili.com/x/dynamic/feed/dynamic_report/add',params=params,headers=headers,json=json_data,proxies=proxies,timeout=(3,3))
                 print(f'账号{i}动态{reportcount:03}:{response.text}')
-            id_strs.clear()
+            opus_ids.clear()
             if not has_more:
                 break
 
