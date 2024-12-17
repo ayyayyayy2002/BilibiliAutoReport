@@ -10,9 +10,12 @@ uid_file = os.path.join(base_dir, '附加文件', 'uid.txt')
 
 env_file = os.path.join(base_dir, '附加文件', '.env')
 load_dotenv(dotenv_path=env_file)
+COOKIE1 = os.getenv('COOKIE1')
 UA = os.getenv('UA')
 N = os.getenv('N')
+CSRF1 = re.search(r'bili_jct=([^;]*)', COOKIE1).group(1)
 uids = set()
+
 
 
 try:
@@ -34,7 +37,33 @@ if not uids:
 
 
 for uid in uids:
-    print(uid)
+    opus_ids = set()
+    offset = ''
+    print(f'动态UID: {uid}')
+    while True:
+        headers = {'cookie': COOKIE1, 'user-agent': UA}
+        params = {
+            'host_mid': uid,
+            'offset': offset, }
+        response = requests.get('https://api.bilibili.com/x/polymer/web-dynamic/v1/opus/feed/space', params=params,
+                                headers=headers, proxies=proxies, timeout=(3, 3))
+        # response = requests.get('https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all',params=params,headers=headers,proxies = proxies,timeout=(3,3))
+        data = response.json()
+        if 'data' in data:
+            opus_ids.update([item['opus_id'] for item in data['data']['items']])
+            offset = data['data']['offset']
+            has_more = data['data']['has_more']
+        else:
+            print("JSON 对象中不包含 'data' 字段")
+            print(response.text)
+            offset = ''
+            has_more = ''
+        if not has_more:
+            break
+    #print(has_more)
+    #print(opus_ids)
+    #print(offset)
+    #print(len(opus_ids))
 
     for i in range(1, int(N) + 1):
         reportcount = 0
@@ -43,64 +72,27 @@ for uid in uids:
         CSRF = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
 
 
-
         headers = {'cookie': COOKIE, 'user-agent': UA}
         data = {
             'mid': uid,
             'reason': '1,2,3',
-            'reason_v2': '3',
+            'reason_v2': '6',
             'csrf': CSRF, }
         response = requests.post('https://space.bilibili.com/ajax/report/add', headers=headers, data=data, proxies=proxies)
         print(response.text)
 
-        offset = ''
-        csrf = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
 
-        while True:
+        for opus_id in opus_ids:
+            reportcount += 1
             headers = {'cookie': COOKIE, 'user-agent': UA}
-            params = {
-                'host_mid': uid,
-                'offset': offset,}
-            response = requests.get('https://api.bilibili.com/x/polymer/web-dynamic/v1/opus/feed/space',params=params,headers=headers,proxies = proxies,timeout=(3,3))
-           #response = requests.get('https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all',params=params,headers=headers,proxies = proxies,timeout=(3,3))
-            data = response.json()
-            if 'data' in data:
-                opus_ids = [item['opus_id'] for item in data['data']['items']]
-                offset = data['data']['offset']
-                has_more = data['data']['has_more']
-            else:
-                print("JSON 对象中不包含 'data' 字段")
-                print(response.text)
-                offset = ''
-                has_more = ''
-                id_strs = []
-
-
-            # 打印结果
-            #print(has_more)
-            print(opus_ids)
-            #print(offset)
-            for opus_id in opus_ids:
-                reportcount += 1
-                headers = {'cookie': COOKIE, 'user-agent': UA}
-                params = {'csrf': csrf,}
-                json_data = {
-                    'accused_uid': int(uid),
-                    'dynamic_id': opus_id,
-                    'reason_type': 0,
-                    'reason_desc': '违规行为：在标题及评论中支持“台独”行为，并辱骂讽刺政府和领导人。诉求：删除此动态并处罚发送此视频的账号',}
-                response = requests.post('https://api.bilibili.com/x/dynamic/feed/dynamic_report/add',params=params,headers=headers,json=json_data,proxies=proxies,timeout=(3,3))
-                print(f'账号{i}动态{reportcount:03}:{response.text}')
-            opus_ids.clear()
-            if not has_more:
-                break
-
-
-
-
-
-
-
-
+            params = {'csrf': CSRF, }
+            json_data = {
+                'accused_uid': int(uid),
+                'dynamic_id': opus_id,
+                'reason_type': 0,
+                'reason_desc': '违规行为：在动态标题及评论中支持“台独”行为，并辱骂讽刺政府和领导人。诉求：删除此动态并处罚发送此视频的账号', }
+            response = requests.post('https://api.bilibili.com/x/dynamic/feed/dynamic_report/add', params=params,
+                                     headers=headers, json=json_data, proxies=proxies, timeout=(3, 3))
+            print(f'账号{i}动态{reportcount:03}:{response.text}')
 
 
