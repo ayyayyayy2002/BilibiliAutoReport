@@ -17,7 +17,7 @@ while True:
     if not skip:
         while True:
             print('启动Getuid.py')
-            getuid_process = subprocess.Popen([sys.executable, 'GetUid.py'], shell=True)
+            getuid_process = subprocess.Popen([sys.executable, 'GetUid.py'])
             getuid_process.wait()  # 等待 Getuid.py 结束
 
 
@@ -27,6 +27,9 @@ while True:
             else:
                 error_message = f"Getuid.py 出现错误，返回码: {getuid_process.returncode}，正在重新运行 Getuid.py..."
                 print(error_message)
+        print('启动SpaceAndDynamic.py')
+        SpaceAndDynamic_process = subprocess.Popen([sys.executable, 'SpaceAndDynamic.py'])
+
 
     else:
         print('首次运行跳过')
@@ -34,7 +37,7 @@ while True:
     while True:
         #report_process.wait()  # 不等待 SpaceAndDynamic.py 结束
         print('启动Report.py')
-        report_process = subprocess.Popen([sys.executable, 'Report.py'], shell=True)
+        report_process = subprocess.Popen([sys.executable, 'Report.py'])
         report_process.wait()  # 等待 Report.py 结束
 
 
