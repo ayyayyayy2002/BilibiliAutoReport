@@ -21,14 +21,13 @@ def capcha(aid,i):
     user_data_dir = os.path.join(base_dir, '附加文件', 'User Data',path_name)
     options = webdriver.ChromeOptions()
     options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("--no-sandbox")
     options.add_argument(f'--user-data-dir={user_data_dir}')  # 设置用户数据目录
     options.binary_location = chrome_binary_path  # 指定 Chrome 浏览器的可执行文件路径
     options.add_argument('--proxy-server="direct://"')
     options.add_argument('--proxy-bypass-list=*')
     # options.add_argument("--disable-sync")
     # options.add_argument("disable-cache")#禁用缓存
-    options.add_argument("--headless")
+    #options.add_argument("--headless")
     options.add_argument('log-level=3')
     service = Service(executable_path=chrome_driver_path)
     driver = webdriver.Chrome(service=service, options=options)  # 启动 Chrome 浏览器
@@ -132,19 +131,29 @@ def capcha(aid,i):
                 except Exception as e:
                     print('点击刷新按钮出错！')
                 '''
+                try:
 
-                WebDriverWait(driver, 3).until(EC.invisibility_of_element_located((By.XPATH, '//*[@class="geetest_item_wrap"]')))
-                print("验证码已消失！")# 等待 'geetest_item_wrap' 元素消失，表示验证码提交成功
-                WebDriverWait(driver, 5).until(EC.alert_is_present())  # 等待最多5秒，直到弹窗出现
-                alert = driver.switch_to.alert  # 切换到弹窗
-                alert.accept()
+                    WebDriverWait(driver, 3).until(EC.invisibility_of_element_located((By.XPATH, '//*[@class="geetest_item_wrap"]')))
+                    print("验证码已消失！")# 等待 'geetest_item_wrap' 元素消失，表示验证码提交成功
+                    try:
+                        WebDriverWait(driver, 5).until(EC.alert_is_present())  # 等待最多5秒，直到弹窗出现
+                        alert = driver.switch_to.alert  # 切换到弹窗
+                        alert.accept()
+                    except Exception as e:
+                        print('弹窗未出现')
+                    break
+                except Exception as e:
+                    print('验证码未消失')
 
 
-                break
+
+
+
+
             break
         except Exception as e:
             print(f'人机验证出错{e}')
-            exit(100)
+
 
 
 
