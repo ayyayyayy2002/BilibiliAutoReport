@@ -1,4 +1,4 @@
-![BilibiliAutoReport](https://socialify.git.ci/ayyayyayy2002/BilibiliAutoReport/image?description=1&font=Bitter&forks=1&issues=1&language=1&name=1&owner=1&pattern=Diagonal%20Stripes&stargazers=1&theme=Auto)
+![BilibiliAutoReport](https://socialify.git.ci/ayyayyayy2002/BilibiliAutoReport/image?description=1&descriptionEditable=%E4%BD%BF%E7%94%A8%E5%85%B3%E9%94%AE%E8%AF%8D%E6%90%9C%E7%B4%A2B%E7%AB%99%E8%A7%86%E9%A2%91%EF%BC%8C%E5%B9%B6%E4%B8%BE%E6%8A%A5%E4%BD%9C%E8%80%85%E7%9A%84%E8%A7%86%E9%A2%91%E3%80%81%E5%8A%A8%E6%80%81%E3%80%81%E6%98%B5%E7%A7%B0%E3%80%81%E7%AD%BE%E5%90%8D%E5%92%8C%E5%A4%B4%E5%83%8F%EF%BC%8C%E6%94%AF%E6%8C%81Win%2BLinux%E5%8F%8C%E5%B9%B3%E5%8F%B0%EF%BC%8C%E6%94%AF%E6%8C%81%E5%A4%9A%E8%B4%A6%E5%8F%B7%EF%BC%8C%E5%8F%AF%E8%BF%87%E4%BA%BA%E6%9C%BA%E9%AA%8C%E8%AF%81&font=Bitter&forks=1&issues=1&language=1&name=1&owner=1&pattern=Floating%20Cogs&stargazers=1&theme=Auto)
 # “哔哩举报机(●'◡'●)”  
 ### 使用[关键词](https://raw.githubusercontent.com/ayyayyayy2002/BilibiliAutoReport/refs/heads/Python%2BSelenium%2BWindows/%E9%99%84%E5%8A%A0%E6%96%87%E4%BB%B6/keywords)搜索视频，并举报作者的视频、动态、昵称、签名和头像，支持Win+Linux双平台，支持多账号，可过人机验证  
 ## 使用条款与免责声明❗❗❗
