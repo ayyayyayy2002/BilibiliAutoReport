@@ -11,11 +11,12 @@
 1，此项目的灵感来源于这个油猴脚本：[bilibili批量举报【高危脚本】-油猴中文网](https://bbs.tampermonkey.net.cn/thread-5222-2-1.html)  
 2，项目中用Selenium完成人机验证的代码来自于[MgArcher/Text_select_captcha: 实现文字点选、选字、选择、点触验证码识别，基于pytorch训练](https://github.com/MgArcher/Text_select_captcha/)，感谢大佬  
 3，项目中纯Python破解人机验证的代码来自于[ravizhan/geetest-v3-click-crack: 极验三代文字点选验证码破解 纯Python实现](https://github.com/ravizhan/geetest-v3-click-crack)，感谢大佬   
-4，网络请求代码全部来自此网站的转换：[Convert curl commands to code](https://curlconverter.com/)  
-5，使用此网站为你的仓库添加头图：[GitHub Socialify](https://socialify.git.ci/)  
-6，此网站可以为仓库添加Star统计图：[GitHub Star History](https://star-history.com/)  
-7，此项目的全部代码由[ChatGPT3.5Turbo](https://platform.openai.com/docs/models/gpt-3-5#gpt-3-5-turbo)完成  
-8，油猴举报脚本在[这里](https://github.com/ayyayyayy2002/BilibiliBatchReport)  
+4，项目中纯Python破解人机验证的代码来自于[mcfx在知乎的回答](https://www.zhihu.com/question/381784377/answer/1099438784)，感谢大佬   
+5，网络请求代码全部来自此网站的转换：[Convert curl commands to code](https://curlconverter.com/)  
+6，使用此网站为你的仓库添加头图：[GitHub Socialify](https://socialify.git.ci/)  
+7，此网站可以为仓库添加Star统计图：[GitHub Star History](https://star-history.com/)  
+8，此项目的全部代码由[ChatGPT3.5Turbo](https://platform.openai.com/docs/models/gpt-3-5#gpt-3-5-turbo)完成  
+9，油猴举报脚本在[这里](https://github.com/ayyayyayy2002/BilibiliBatchReport)  
 
 
 
