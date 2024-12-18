@@ -29,8 +29,8 @@ tids_with_weights = {
     '10014':3,#涉政谣言
     '10015':4,#涉社会事件谣言
     '10017':1,#虚假不实信息
-    '10018':4,#违规推广
-    '52':3,#转载/自制错误
+    '10018':5,#违规推广
+    '52':4,#转载/自制错误
     '10019':2,#其他不规范行为
     '7':1,#人身攻击
     '9':1,#引战
@@ -102,8 +102,11 @@ for uid in uids:
             aids.append(item["modules"]["module_dynamic"]["major"]["archive"]["aid"])
             titles.append(item["modules"]["module_dynamic"]["major"]["archive"]["title"])
             pics.append(item["modules"]["module_dynamic"]["major"]["archive"]["cover"])
-
-    print(f'动态视频个数:{len(aids)},动态标题个数:{len(titles)},动态封面个数:{len(pics)}')
+    count = len(aids)
+    print(f'动态视频个数:{count}')
+    aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
+    with open(aid_log_file, 'a', encoding='utf-8') as file:
+        file.write(f"动态视频个数:{len(aids)},")
 
 
 
@@ -127,11 +130,11 @@ for uid in uids:
                     aids.append(archive['aid'])  # 添加 aid 到集合
                     titles.append(archive['title'])  # 添加 title 到列表
                     pics.append(archive['pic'])  # 添加 pic 到列表
-
-    print(f'合集视频个数:{len(aids)},合集标题个数:{len(titles)},合集封面个数:{len(pics)}')
+    count = len(aids) - count
+    print(f'合集视频个数:{count}')
     aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
     with open(aid_log_file, 'a', encoding='utf-8') as file:
-        file.write(f"合集视频个数:{len(aids)},合集标题个数:{len(titles)},合集图片个数:{len(pics)}\n")
+        file.write(f"合集视频个数:{len(aids)},")
 
     search_url = f'https://api.bilibili.com/x/series/recArchivesByKeywords?mid={uid}&keywords=&ps=0'
     headers = {'cookie': COOKIE1, 'user-agent': UA}
@@ -141,11 +144,11 @@ for uid in uids:
         aids.append(archive['aid'])
         titles.append(archive['title'])
         pics.append(archive['pic'])
-
-    print(f'全部视频个数:{len(aids)},全部标题个数:{len(titles)},全部封面个数:{len(pics)}')
+    count = len(aids) - count
+    print(f'全部视频个数:{count}')
     aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
     with open(aid_log_file, 'a', encoding='utf-8') as file:
-        file.write(f"普通视频个数:{len(aids)},普通标题个数:{len(titles)},普通图片个数:{len(pics)}\n")
+        file.write(f"全部视频个数:{len(aids)}\n")
 
     for i in range(1, int(N) + 1):
         tid = random.choices(tids, weights=weights, k=1)[0]
@@ -160,14 +163,13 @@ for uid in uids:
             reportcount += 1
             time.sleep(2.3)
             headers = {'cookie': COOKIE, 'user-agent': UA}
+            #print(headers)
             data = {
                 'aid': aid,
                 'attach': pic,
                 'block_author': 'false',
                 'csrf': CSRF,
                 'desc': f'违规行为：在视频标题{title}及评论中支持“台独”行为，并辱骂讽刺政府和领导人。诉求：下架此视频并处罚发送此视频的账号',
-
-                #'desc': f'违规行为：在视频标题及评论中支持“台独”行为，并辱骂讽刺政府和领导人。视频标题{title}违规推广色情游戏，视频封面是色情游戏截图。在置顶动态和评论发布加密链接传播色情内容，严重违反刑法第三百六十四条【传播淫秽物品罪】 传播淫秽的书刊、影片、音像、图片或者其他淫秽物品。诉求：下架此视频并处罚发送此视频的账号',
                 'tid': tid
             }
             response = requests.post('https://api.bilibili.com/x/web-interface/appeal/v2/submit', headers=headers,
@@ -175,9 +177,11 @@ for uid in uids:
             print(f'账号{i}视频{reportcount:03}:{response.text}')
             if "62009" in response.text or reportcount >= 200:
                 break
-            elif "-352" in response.text:
+            elif "-352" in response.text or "-351" in response.text:
                 COOKIE = capcha(aid, i)
+                os.environ[cookie_name] = COOKIE
                 set_key(env_file, cookie_name, COOKIE)
+
 
 
             elif "412" in response.text:
