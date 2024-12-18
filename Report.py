@@ -1,9 +1,11 @@
-import random
-
 from dotenv import load_dotenv, set_key
 from datetime import datetime
 from Capcha import capcha
+from AVtoBV import enc
+import subprocess
+import argparse
 import requests
+import random
 import time
 import re
 import os
@@ -29,7 +31,7 @@ tids_with_weights = {
     '10014':3,#涉政谣言
     '10015':4,#涉社会事件谣言
     '10017':1,#虚假不实信息
-    '10018':5,#违规推广
+    '10018':6,#违规推广
     '52':4,#转载/自制错误
     '10019':2,#其他不规范行为
     '7':1,#人身攻击
@@ -44,9 +46,31 @@ tids_with_weights = {
 tids = list(tids_with_weights.keys())
 weights = list(tids_with_weights.values())
 
-with open(log_file, 'a', encoding='utf-8') as log:
-    timestamp = datetime.now().strftime('[%Y-%m-%d %H-%M-%S]')
-    log.write(f'{timestamp}开始\n')
+
+
+
+
+# 创建ArgumentParser对象
+parser = argparse.ArgumentParser()
+parser.add_argument('--git', default=False, action='store_true', help='Enable git')
+args = parser.parse_args()
+
+# 获取git参数值
+git = args.git
+
+print(f'Git is enabled: {git}')
+
+
+
+
+
+
+
+
+
+
+
+
 try:
     with open(uid_file, 'r', encoding='utf-8') as file:  # 以读取模式打开文件
         for line in file:
@@ -81,10 +105,10 @@ for uid in uids:
             print(f"删除已注销UID时发生错误: {e}")
 
     else:
-        print(f"UID: {uid} NAME: {name}")
+        print(f"UID: {uid} NAME: {name} TIME: {datetime.now().strftime('[%Y-%m-%d %H-%M-%S]')}")
         aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
         with open(aid_log_file, 'w', encoding='utf-8') as file:
-            file.write(f"UID: {uid} NAME: {name}\n")
+            file.write(f"UID: {uid} NAME: {name} TIME: {datetime.now().strftime('[%Y-%m-%d %H-%M-%S]')}\n")
 
     aids = []
     titles = []
@@ -107,7 +131,6 @@ for uid in uids:
     aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
     with open(aid_log_file, 'a', encoding='utf-8') as file:
         file.write(f"动态视频个数:{len(aids)},")
-
 
 
 
@@ -136,6 +159,9 @@ for uid in uids:
     with open(aid_log_file, 'a', encoding='utf-8') as file:
         file.write(f"合集视频个数:{len(aids)},")
 
+
+
+
     search_url = f'https://api.bilibili.com/x/series/recArchivesByKeywords?mid={uid}&keywords=&ps=0'
     headers = {'cookie': COOKIE1, 'user-agent': UA}
     response = requests.get(search_url, headers=headers, proxies=proxies, timeout=(3, 3))
@@ -149,6 +175,9 @@ for uid in uids:
     aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
     with open(aid_log_file, 'a', encoding='utf-8') as file:
         file.write(f"全部视频个数:{len(aids)}\n")
+
+
+
 
     for i in range(1, int(N) + 1):
         tid = random.choices(tids, weights=weights, k=1)[0]
@@ -175,7 +204,7 @@ for uid in uids:
             response = requests.post('https://api.bilibili.com/x/web-interface/appeal/v2/submit', headers=headers,
                                      data=data, proxies=proxies, timeout=(3, 3))
             print(f'账号{i}视频{reportcount:03}:{response.text}')
-            if "62009" in response.text or reportcount >= 200:
+            if "62009" in response.text or reportcount >= 65:
                 break
             elif "-352" in response.text or "-351" in response.text:
                 COOKIE = capcha(aid, i)
@@ -198,7 +227,7 @@ for uid in uids:
 
             aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
             with open(aid_log_file, 'a', encoding='utf-8') as file:
-                file.write(f'{aid},{tid}\n')
+                file.write(f'{enc(aid)},{tid}\n')
 
 
     try:
@@ -211,6 +240,43 @@ for uid in uids:
         print(f"删除UID: {uid}")
     except Exception as e:
         print(f"删除UID时发生错误: {e}")
+
+
+
+
+    if git:
+        try:
+            subprocess.run('git config --system --unset credential.helper', timeout=20, shell=True)
+            subprocess.run('git config --global http.proxy http://127.0.0.1:7890', timeout=20, shell=True)
+            subprocess.run('git config --global https.proxy https://127.0.0.1:7890', timeout=20, shell=True)
+
+            print('1')
+            # subprocess.run('git config --system credential.helper manager', timeout=20, shell=True)
+            print('2')
+            subprocess.run('git fetch', timeout=20, shell=True)
+            print('3')
+            subprocess.run('git merge', timeout=20, shell=True)
+            print('4')
+            subprocess.run('git add .', timeout=20, shell=True)
+            print('5')
+            subprocess.run('git commit -m "txt"', timeout=20, shell=True)
+            print('6')
+            subprocess.run('git push', timeout=30, shell=True)
+            print('7')
+
+        except Exception as e:
+            print(e)
+
+
+
+
+
+
+
+
+
+
+
 
 
 with open(log_file, 'a', encoding='utf-8') as log:
