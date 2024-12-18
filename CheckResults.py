@@ -3,6 +3,7 @@ import re
 
 import requests
 from dotenv import load_dotenv
+
 proxies = {'http': None, 'https': None}
 base_dir = os.path.dirname(os.path.abspath(__file__))
 env_file = os.path.join(base_dir, '附加文件', '.env')
@@ -13,11 +14,6 @@ deleted = []
 restricted = []
 handled = []
 normal = []
-
-
-
-
-
 
 UA = os.getenv('UA')
 COOKIE = os.getenv('COOKIE1')
@@ -34,11 +30,12 @@ params = {
 }
 while True:
     try:
-        response = requests.get('https://message.bilibili.com/x/sys-msg/query_user_notify',params=params,headers=headers,proxies=proxies)
+        response = requests.get('https://message.bilibili.com/x/sys-msg/query_user_notify', params=params,
+                                headers=headers, proxies=proxies)
         data = response.json()
 
         for item in data["data"]["system_notify_list"]:
-            bvid = item["content"].split("【")[1].split("】")[0]
+            bvid = f'{item["content"].split("【")[1].split("】")[0]} {item["time_at"]}'
             bvids.append(bvid)
             if "下线" in item["content"]:
                 deleted.append(bvid)
@@ -56,12 +53,12 @@ while True:
 with open(bvid_file, 'w', encoding='utf-8') as file:
     print(f'总数: {len(bvids)} 下线: {len(deleted)} 限流: {len(restricted)} 其他处理: {len(handled)}')
     file.write(f'总数: {len(bvids)} 下线: {len(deleted)} 限流: {len(restricted)} 其他处理: {len(handled)} \n')
-    file.write(f'\n下线 {100*len(deleted)/len(bvids)}%\n')
+    file.write(f'\n下线 {100 * len(deleted) / len(bvids)}%\n')
     for bvid in deleted:
         file.write(f'{bvid}\n')
-    file.write(f'\n限流 {100*len(restricted)/len(bvids)}%\n')
+    file.write(f'\n限流 {100 * len(restricted) / len(bvids)}%\n')
     for bvid in restricted:
         file.write(f'{bvid}\n')
-    file.write(f'\n其他处理 {100*len(handled)/len(bvids)}%\n')
+    file.write(f'\n其他处理 {100 * len(handled) / len(bvids)}%\n')
     for bvid in handled:
         file.write(f'{bvid}\n')
