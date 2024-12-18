@@ -183,7 +183,7 @@ for uid in uids:
             if "62009" in response.text or reportcount >= 200:
                 break
             elif "-352" in response.text or "-351" in response.text:
-                COOKIE = capcha(aid, i)
+                COOKIE = capcha(aid)
                 os.environ[cookie_name] = COOKIE
                 set_key(env_file, cookie_name, COOKIE)
 
