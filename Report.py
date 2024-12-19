@@ -17,7 +17,7 @@ list_file = os.path.join(base_dir, '附加文件', 'list')
 log_file = os.path.join(base_dir, '运行记录', '循环记录.txt')
 env_file = os.path.join(base_dir, '附加文件', '.env')
 proxies = {'http': None, 'https': None}
-uids = set()
+uids = []
 load_dotenv(dotenv_path=env_file)
 UA = os.getenv('UA')
 N = os.getenv('N')
@@ -75,7 +75,8 @@ try:
     with open(uid_file, 'r', encoding='utf-8') as file:  # 以读取模式打开文件
         for line in file:
             line = line.strip()  # 去掉行首尾的空白字符
-            uids.add(line)
+            if line.isdigit():
+                uids.append(line)
 except Exception as e:
     print(f"无法读取UID文件: {e}")
     exit(0)
@@ -85,7 +86,8 @@ if not uids:
     exit(0)
 
 for uid in uids:
-
+    date = datetime.now().strftime('[%m-%d]')
+    aid_log_file = os.path.join(base_dir, '运行记录', '处理记录', f'{date}{uid}.txt')
     headers = {'cookie': COOKIE1, 'user-agent': UA}
     search_url = f'https://api.bilibili.com/x/web-interface/card?mid={uid}'
     response = requests.get(search_url, headers=headers, proxies=proxies, timeout=(5, 10))
@@ -104,11 +106,10 @@ for uid in uids:
         except Exception as e:
             print(f"删除已注销UID时发生错误: {e}")
 
-    else:
-        print(f"UID: {uid} NAME: {name} TIME: {datetime.now().strftime('[%Y-%m-%d %H-%M-%S]')}")
-        aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
-        with open(aid_log_file, 'w', encoding='utf-8') as file:
-            file.write(f"UID: {uid} NAME: {name} TIME: {datetime.now().strftime('[%Y-%m-%d %H-%M-%S]')}\n")
+
+    print(f"UID: {uid} NAME: {name} TIME: {datetime.now().strftime('[%Y-%m-%d %H-%M-%S]')}")
+    with open(aid_log_file, 'a', encoding='utf-8') as file:
+        file.write(f"UID: {uid} NAME: {name} TIME: {datetime.now().strftime('[%Y-%m-%d %H-%M-%S]')}3\n")
 
     aids = []
     titles = []
@@ -126,11 +127,10 @@ for uid in uids:
             aids.append(item["modules"]["module_dynamic"]["major"]["archive"]["aid"])
             titles.append(item["modules"]["module_dynamic"]["major"]["archive"]["title"])
             pics.append(item["modules"]["module_dynamic"]["major"]["archive"]["cover"])
-    count = len(aids)
-    print(f'动态视频个数:{count}')
-    aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
+    count1 = len(aids)
+    print(f'动态视频个数:{count1}')
     with open(aid_log_file, 'a', encoding='utf-8') as file:
-        file.write(f"动态视频个数:{len(aids)},")
+        file.write(f"动态视频个数:{count1},")
 
 
 
@@ -153,11 +153,10 @@ for uid in uids:
                     aids.append(archive['aid'])  # 添加 aid 到集合
                     titles.append(archive['title'])  # 添加 title 到列表
                     pics.append(archive['pic'])  # 添加 pic 到列表
-    count = len(aids) - count
-    print(f'合集视频个数:{count}')
-    aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
+    count2 = len(aids) - count1
+    print(f'合集视频个数:{count2}')
     with open(aid_log_file, 'a', encoding='utf-8') as file:
-        file.write(f"合集视频个数:{len(aids)},")
+        file.write(f"合集视频个数:{count2},")
 
 
 
@@ -170,17 +169,16 @@ for uid in uids:
         aids.append(archive['aid'])
         titles.append(archive['title'])
         pics.append(archive['pic'])
-    count = len(aids) - count
-    print(f'全部视频个数:{count}')
-    aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
+    count3 = len(aids) - count2 - count1
+    print(f'普通视频个数:{count3}')
     with open(aid_log_file, 'a', encoding='utf-8') as file:
-        file.write(f"全部视频个数:{len(aids)}\n")
+        file.write(f"普通视频个数:{count3}\n")
 
 
 
 
     for i in range(1, int(N) + 1):
-        tid = random.choices(tids, weights=weights, k=1)[0]
+
         print(f'\n账号{i}  https://space.bilibili.com/{uid}\n')
         reportcount = 0
         cookie_name = f'COOKIE{i}'
@@ -188,7 +186,7 @@ for uid in uids:
         CSRF = re.search(r'bili_jct=([^;]*)', COOKIE).group(1)
 
         for aid, title, pic in zip(aids, titles, pics):
-
+            tid = random.choices(tids, weights=weights, k=1)[0]
             reportcount += 1
             time.sleep(2.3)
             headers = {'cookie': COOKIE, 'user-agent': UA}
@@ -204,7 +202,7 @@ for uid in uids:
             response = requests.post('https://api.bilibili.com/x/web-interface/appeal/v2/submit', headers=headers,
                                      data=data, proxies=proxies, timeout=(3, 3))
             print(f'账号{i}视频{reportcount:03}:{response.text}')
-            if "62009" in response.text or reportcount >= 200:
+            if "62009" in response.text or reportcount >= 65:
                 break
             elif "-352" in response.text or "-351" in response.text:
                 COOKIE = capcha(aid, i)
@@ -225,9 +223,8 @@ for uid in uids:
                 print('还剩1分钟')
                 time.sleep(60)
 
-            aid_log_file = os.path.join(base_dir, '运行记录', 'UID记录', f'{uid}.txt')
             with open(aid_log_file, 'a', encoding='utf-8') as file:
-                file.write(f'{enc(aid)},{tid}\n')
+                file.write(f'{enc(int(aid))},{tid}，{title}\n')
 
 
     try:
@@ -253,16 +250,14 @@ for uid in uids:
             print('1')
             # subprocess.run('git config --system credential.helper manager', timeout=20, shell=True)
             print('2')
-            subprocess.run('git fetch', timeout=20, shell=True)
+            subprocess.run('git pull --no-edit', timeout=20, shell=True)
             print('3')
-            subprocess.run('git merge', timeout=20, shell=True)
-            print('4')
             subprocess.run('git add .', timeout=20, shell=True)
-            print('5')
+            print('4')
             subprocess.run('git commit -m "txt"', timeout=20, shell=True)
-            print('6')
+            print('5')
             subprocess.run('git push', timeout=30, shell=True)
-            print('7')
+            print('6')
 
         except Exception as e:
             print(e)
