@@ -202,10 +202,10 @@ for uid in uids:
             response = requests.post('https://api.bilibili.com/x/web-interface/appeal/v2/submit', headers=headers,
                                      data=data, proxies=proxies, timeout=(3, 3))
             print(f'账号{i}视频{reportcount:03}:{response.text}')
-            if "62009" in response.text or reportcount >= 65:
+            if "62009" in response.text or reportcount >= 200:
                 break
             elif "-352" in response.text or "-351" in response.text:
-                COOKIE = capcha(aid, i)
+                COOKIE = capcha(aid)
                 os.environ[cookie_name] = COOKIE
                 set_key(env_file, cookie_name, COOKIE)
 
